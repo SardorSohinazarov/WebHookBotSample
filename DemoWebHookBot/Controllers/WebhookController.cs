@@ -9,16 +9,12 @@ namespace DemoWebHookBot.Controllers
         private readonly HandleUpdateService _updateService;
 
         public WebhookController(HandleUpdateService updateService)
-        {
-            _updateService = updateService;
-        }
+            => _updateService = updateService;
 
         [HttpPost]
-        public async Task<IActionResult> Post(
-            [FromBody] Update update)
+        public async Task<IActionResult> Post([FromBody] Update update)
         {
-            if (update is not null)
-                await _updateService.HandleUpdateAsync(update);
+            await _updateService.HandleUpdateAsync(update);
 
             return Ok();
         }

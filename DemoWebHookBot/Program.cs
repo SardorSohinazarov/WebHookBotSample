@@ -4,21 +4,16 @@ using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var botConfig = builder.Configuration.GetSection("BotConfiguration")
     .Get<BotConfiguration>();
-
-builder.Services.AddHostedService<ConfigureWebhook>();
 
 builder.Services.AddHttpClient("tgwebhook")
     .AddTypedClient<ITelegramBotClient>(httpClient
         => new TelegramBotClient(botConfig.Token, httpClient));
 
+builder.Services.AddControllers();
+builder.Services.AddHostedService<ConfigureWebhook>();
 builder.Services.AddScoped<HandleUpdateService>();
-
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 var app = builder.Build();
@@ -33,8 +28,7 @@ app.UseEndpoints(endpoints =>
         endpoints.MapControllerRoute(
             name: "tgwebhook",
             pattern: $"bot/{token}",
-            new { controller = "Webhook", action = "Post" }
-            );
+            new { controller = "Webhook", action = "Post" });
 
         endpoints.MapControllers();
     });

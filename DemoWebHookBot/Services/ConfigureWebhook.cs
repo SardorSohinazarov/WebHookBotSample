@@ -9,7 +9,10 @@ namespace DemoWebHookBot.Services
         private readonly ILogger<ConfigureWebhook> _logger;
         private readonly IServiceProvider _serviceProvider;
         private readonly BotConfiguration _configuration;
-        public ConfigureWebhook(ILogger<ConfigureWebhook> logger, IServiceProvider serviceProvider, IConfiguration configuration)
+        public ConfigureWebhook(
+            ILogger<ConfigureWebhook> logger,
+            IServiceProvider serviceProvider,
+            IConfiguration configuration)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
@@ -19,9 +22,7 @@ namespace DemoWebHookBot.Services
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             using var scope = _serviceProvider.CreateScope();
-
             var botClient = scope.ServiceProvider.GetRequiredService<ITelegramBotClient>();
-
             var webhookAddress = $"{_configuration.HostAddress}/bot/{_configuration.Token}";
 
             _logger.LogInformation("Setting webhook");
@@ -33,14 +34,12 @@ namespace DemoWebHookBot.Services
             await botClient.SetWebhookAsync(
                 url: webhookAddress,
                 allowedUpdates: Array.Empty<UpdateType>(),
-                cancellationToken: cancellationToken
-                );
+                cancellationToken: cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             using var scope = _serviceProvider.CreateScope();
-
             var botClient = scope.ServiceProvider.GetRequiredService<ITelegramBotClient>();
 
             _logger.LogInformation("Setting tamom");

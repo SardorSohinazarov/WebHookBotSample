@@ -18,6 +18,8 @@ namespace DemoWebHookBot.Services
 
         public async Task HandleUpdateAsync(Update update)
         {
+            _logger.LogInformation("Botga message keldi");
+
             if (update.Message is not null)
                 await _botClient.SendTextMessageAsync(
                     chatId: update.Message.Chat.Id,
