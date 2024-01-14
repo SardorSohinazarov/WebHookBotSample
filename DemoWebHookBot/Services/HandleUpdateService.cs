@@ -21,9 +21,11 @@ namespace DemoWebHookBot.Services
             _logger.LogInformation("Botga message keldi");
 
             if (update.Message is not null)
+            {
                 await _botClient.SendTextMessageAsync(
                     chatId: update.Message.Chat.Id,
                     text: "Qales");
+            }
         }
     }
 }

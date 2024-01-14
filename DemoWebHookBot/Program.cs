@@ -7,11 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 var botConfig = builder.Configuration.GetSection("BotConfiguration")
     .Get<BotConfiguration>();
 
-builder.Services.AddHttpClient("tgwebhook")
+builder.Services.AddHttpClient("webhook")
     .AddTypedClient<ITelegramBotClient>(httpClient
         => new TelegramBotClient(botConfig.Token, httpClient));
 
-builder.Services.AddControllers();
 builder.Services.AddHostedService<ConfigureWebhook>();
 builder.Services.AddScoped<HandleUpdateService>();
 builder.Services.AddControllers().AddNewtonsoftJson();
@@ -26,7 +25,7 @@ app.UseEndpoints(endpoints =>
         var token = botConfig.Token;
 
         endpoints.MapControllerRoute(
-            name: "tgwebhook",
+            name: "webhook",
             pattern: $"bot/{token}",
             new { controller = "Webhook", action = "Post" });
 
